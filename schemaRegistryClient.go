@@ -179,8 +179,7 @@ func (client *SchemaRegistryClient) GetLatestSchema(subject string, isKey bool) 
 // GetSchemaVersions returns a list of versions from a given subject.
 func (client *SchemaRegistryClient) GetSchemaVersions(subject string, isKey bool) ([]int, error) {
 
-	concreteSubject := getConcreteSubject(subject, isKey)
-	resp, err := client.httpRequest("GET", fmt.Sprintf(subjectVersions, concreteSubject), nil)
+	resp, err := client.httpRequest("GET", fmt.Sprintf(subjectVersions, subject), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -242,7 +241,7 @@ func (client *SchemaRegistryClient) CreateSchema(subject string, schema string,
 		return nil, err
 	}
 	payload := bytes.NewBuffer(schemaBytes)
-	resp, err := client.httpRequest("POST", fmt.Sprintf(subjectVersions, concreteSubject), payload)
+	resp, err := client.httpRequest("POST", fmt.Sprintf(subjectVersions, subject), payload)
 	if err != nil {
 		return nil, err
 	}
@@ -328,7 +327,7 @@ func (client *SchemaRegistryClient) getVersion(subject string,
 		}
 	}
 
-	resp, err := client.httpRequest("GET", fmt.Sprintf(subjectByVersion, concreteSubject, version), nil)
+	resp, err := client.httpRequest("GET", fmt.Sprintf(subjectByVersion, subject, version), nil)
 	if err != nil {
 		return nil, err
 	}
